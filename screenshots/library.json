@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/library",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Ashbourne Clinical",
+      "hasCanvas": false,
+      "bodyTextLen": 37367,
+      "bodyTextHash": "83bd08a2e0865ffa5bfb761952984db3bded72d3fec1bd958d86751be82b1bef",
+      "bodyTextPrefix": "Ashbourne Clinical ASSESSMENT WORKSTATION Desk Encounter Atlas R",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/library.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Ashbourne Clinical",
+      "hasCanvas": false,
+      "bodyTextLen": 37367,
+      "bodyTextHash": "83bd08a2e0865ffa5bfb761952984db3bded72d3fec1bd958d86751be82b1bef",
+      "bodyTextPrefix": "Ashbourne Clinical ASSESSMENT WORKSTATION Desk Encounter Atlas R",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/library-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/library.json"
+}
