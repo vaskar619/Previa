@@ -70,7 +70,7 @@ export function Shell({ children }: { children: ReactNode }) {
             clinicians often consider — never start, stop, or change a drug from this screen.
           </p>
           <p className="mt-5 border-t border-border pt-4 text-xs font-semibold tracking-wide text-muted-foreground">
-            Created by VASKAR BHUNIA &amp; ROUNAK DAS
+            Created by VASKAR BHUNIA
           </p>
         </div>
       </footer>
