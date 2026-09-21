@@ -79,6 +79,9 @@ export function Shell({ children }: { children: ReactNode }) {
             {" — "}
             {t("footer")}
           </p>
+          <p className="mt-5 border-t border-border pt-4 text-xs font-semibold tracking-wide text-muted-foreground">
+            Created by VASKAR BHUNIA
+          </p>
         </div>
       </footer>
     </div>
