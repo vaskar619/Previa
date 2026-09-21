@@ -11,18 +11,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { saveEncounter } from "@/lib/clinical/history";
 import { runPrediction } from "@/lib/clinical/predict";
 import { useAssess } from "@/lib/clinical/store";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/assess")({ component: AssessPage });
 
-const TITLES = [
-  "About you",
-  "Vital signs (if you have them)",
-  "Your symptoms",
-  "How long this has been going on",
-  "Check your answers",
-];
-
 function AssessPage() {
+  const { t } = useT();
   const step = useAssess((s) => s.step);
   const setStep = useAssess((s) => s.setStep);
   const selected = useAssess((s) => s.selected);
@@ -32,6 +26,7 @@ function AssessPage() {
   const asInput = useAssess((s) => s.asInput);
   const navigate = useNavigate();
 
+  const titles = [t("aboutYou"), t("vitalsTitle"), t("yourSymptoms"), t("timing"), t("review")];
   const canNext = step !== 2 || selected.length > 0;
 
   async function next() {
@@ -60,9 +55,9 @@ function AssessPage() {
       <Card className="mt-6 rounded-2xl">
         <CardHeader>
           <p className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">
-            Symptom check · step {step + 1} of 5
+            {t("checkStep")} {step + 1} {t("of")} 5
           </p>
-          <CardTitle className="text-2xl">{TITLES[step]}</CardTitle>
+          <CardTitle className="text-2xl">{titles[step]}</CardTitle>
         </CardHeader>
         <CardContent>
           {step === 0 ? <StepBio /> : null}
@@ -82,29 +77,29 @@ function AssessPage() {
               }}
             >
               <ArrowLeft />
-              Back
+              {t("back")}
             </Button>
             <Button type="button" onClick={next} disabled={!canNext || fitting}>
               {fitting ? (
                 <>
                   <LoaderCircle className="animate-spin" />
-                  Fitting ensemble
+                  {t("fitting")}
                 </>
               ) : step === 4 ? (
                 <>
-                  See possible conditions
+                  {t("seePossible")}
                   <ArrowRight />
                 </>
               ) : (
                 <>
-                  Continue
+                  {t("continue")}
                   <ArrowRight />
                 </>
               )}
             </Button>
           </div>
           {step === 2 && selected.length === 0 ? (
-            <p className="mt-3 text-sm text-muted-foreground">Select at least one finding to continue.</p>
+            <p className="mt-3 text-sm text-muted-foreground">{t("needSymptom")}</p>
           ) : null}
         </CardContent>
       </Card>

@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
-
-const STEPS = ["You", "Vitals", "Symptoms", "Timing", "Review"] as const;
+import { useT } from "@/lib/i18n";
 
 export function Stepper({ step }: { step: number }) {
+  const { t } = useT();
+  const STEPS = [t("stepYou"), t("stepVitals"), t("stepSymptoms"), t("stepTiming"), t("stepReview")];
+
   return (
-    <ol className="flex flex-wrap gap-2" aria-label="Symptom check steps">
+    <ol className="flex flex-wrap gap-2" aria-label={t("navCheck")}>
       {STEPS.map((label, i) => (
         <li key={label} className="flex items-center gap-2">
           <span

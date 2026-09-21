@@ -1,9 +1,10 @@
 import { ClinicalDisclaimer } from "@/components/layout/disclaimer";
 import { bmiOf } from "@/lib/clinical/features";
-import { SYMPTOM_BY_ID } from "@/lib/clinical/symptoms";
 import { useAssess } from "@/lib/clinical/store";
+import { useT } from "@/lib/i18n";
 
 export function StepReview() {
+  const { t, symptomName } = useT();
   const bio = useAssess((s) => s.bio);
   const vitals = useAssess((s) => s.vitals);
   const selected = useAssess((s) => s.selected);
@@ -14,18 +15,17 @@ export function StepReview() {
     <div className="grid gap-6">
       <ClinicalDisclaimer compact />
       <section>
-        <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">Person</h3>
+        <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">{t("aboutYou")}</h3>
         <p className="mt-2 text-sm leading-relaxed">
-          {bio.age}-year-old {bio.sex}
-          {bio.pregnant ? ", pregnant" : ""}
-          {bio.smoker ? ", smokes" : ""}
-          {bio.travel ? ", recent travel" : ""}. BMI {bmi.toFixed(1)}.
-          {bio.comorbidities.length ? ` Background: ${bio.comorbidities.join(", ")}.` : ""}
-          {bio.notes ? ` Concern: ${bio.notes}` : ""}
+          {bio.age}-year-old {t(bio.sex === "female" ? "female" : bio.sex === "male" ? "male" : "other")}
+          {bio.pregnant ? `, ${t("pregnant")}` : ""}
+          {bio.smoker ? `, ${t("smoker")}` : ""}
+          {bio.travel ? `, ${t("travel")}` : ""}. {t("bmi")} {bmi.toFixed(1)}.
+          {bio.notes ? ` ${bio.notes}` : ""}
         </p>
       </section>
       <section>
-        <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">Vitals</h3>
+        <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">{t("stepVitals")}</h3>
         <p className="mt-2 text-sm tabular-nums text-muted-foreground">
           {[
             vitals.temperatureC != null ? `${vitals.temperatureC} °C` : null,
@@ -35,26 +35,24 @@ export function StepReview() {
             vitals.respRate != null ? `RR ${vitals.respRate}` : null,
           ]
             .filter(Boolean)
-            .join(" · ") || "No vitals entered — priors will be used."}
+            .join(" · ") || "—"}
         </p>
       </section>
       <section>
-        <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">
-          Course
-        </h3>
+        <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">{t("stepTiming")}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          {context.onset} onset, day {context.durationDays}, severity {context.severity}/10
-          {context.progressing ? ", progressing" : ""}.
+          {t(context.onset === "unknown" ? "unsure" : context.onset)}, {context.durationDays}d, {context.severity}/10
+          {context.progressing ? `, ${t("worse")}` : ""}.
         </p>
       </section>
       <section>
         <h3 className="text-[0.7rem] uppercase tracking-[0.16em] text-primary font-medium">
-          Findings ({selected.length})
+          {t("stepSymptoms")} ({selected.length})
         </h3>
         <ul className="mt-2 flex flex-wrap gap-2">
           {selected.map((id) => (
             <li key={id} className="rounded-full bg-muted px-3 py-1 text-sm">
-              {SYMPTOM_BY_ID[id]?.name ?? id}
+              {symptomName(id)}
             </li>
           ))}
         </ul>

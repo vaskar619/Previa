@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:8080/",
+  "url": "http://127.0.0.1:8081/",
   "viewports": {
     "desktop": {
       "width": 1280,
@@ -13,7 +13,7 @@
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
-      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
     },
     "mobile": {
       "width": 390,
@@ -21,16 +21,20 @@
       "status": 200,
       "title": "PREVIA",
       "hasCanvas": false,
-      "bodyTextLen": 2474,
-      "bodyTextHash": "1ea294d42c82aaec22cbe1bf337d003e1f08d465fac0f4a8d8fd1feb01a24f5c",
-      "bodyTextPrefix": "Skip to content Home Symptom check Conditions My results English",
+      "bodyTextLen": 2481,
+      "bodyTextHash": "9626ea94465be6dc431121dac8e90b833bc169d4d65572f25d81c5fcd980ff68",
+      "bodyTextPrefix": "Skip to content PREVIA Home Symptom check Conditions My results ",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
-      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
     }
   },
   "brandWarnings": [],
   "authWarnings": [],
-  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "mobile: body text replaced (similar length, page start changed)"
+  ]
 }

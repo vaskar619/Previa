@@ -6,9 +6,22 @@ import { COMORBIDITY_OPTIONS } from "@/lib/clinical/labels";
 import { bmiOf } from "@/lib/clinical/features";
 import { useAssess } from "@/lib/clinical/store";
 import type { ComorbidityId, Sex } from "@/lib/clinical/types";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
+const COMORBID_KEY: Record<string, string> = {
+  diabetes: "diabetes",
+  hypertension: "hypertension",
+  asthma: "asthma",
+  copd: "copd",
+  "heart-disease": "heartDisease",
+  "kidney-disease": "kidneyDisease",
+  immunocompromised: "immuno",
+  cancer: "cancer",
+};
+
 export function StepBio() {
+  const { t } = useT();
   const bio = useAssess((s) => s.bio);
   const setBio = useAssess((s) => s.setBio);
   const bmi = bmiOf(bio.heightCm, bio.weightKg);
@@ -16,7 +29,7 @@ export function StepBio() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Age (years)" htmlFor="age">
+        <Field label={t("age")} htmlFor="age">
           <Input
             id="age"
             type="number"
@@ -26,7 +39,7 @@ export function StepBio() {
             onChange={(e) => setBio({ age: Number(e.target.value) })}
           />
         </Field>
-        <Field label="Height (cm)" htmlFor="height">
+        <Field label={t("height")} htmlFor="height">
           <Input
             id="height"
             type="number"
@@ -36,7 +49,7 @@ export function StepBio() {
             onChange={(e) => setBio({ heightCm: Number(e.target.value) })}
           />
         </Field>
-        <Field label="Weight (kg)" htmlFor="weight">
+        <Field label={t("weight")} htmlFor="weight">
           <Input
             id="weight"
             type="number"
@@ -48,18 +61,18 @@ export function StepBio() {
         </Field>
       </div>
       <p className="text-sm text-muted-foreground">
-        Body-mass index{" "}
+        {t("bmi")}{" "}
         <span className="tabular-nums font-medium text-foreground">{bmi.toFixed(1)}</span>
       </p>
 
       <div>
-        <p className="text-sm font-medium mb-2">Sex recorded at intake</p>
+        <p className="text-sm font-medium mb-2">{t("sex")}</p>
         <div className="flex flex-wrap gap-2">
           {(
             [
-              ["female", "Female"],
-              ["male", "Male"],
-              ["other", "Other / unspecified"],
+              ["female", t("female")],
+              ["male", t("male")],
+              ["other", t("other")],
             ] as [Sex, string][]
           ).map(([id, label]) => (
             <button
@@ -81,27 +94,25 @@ export function StepBio() {
 
       <div className="grid gap-3 sm:grid-cols-2">
         <Toggle
-          label="Currently pregnant"
+          label={t("pregnant")}
           on={bio.pregnant}
           disabled={bio.sex === "male"}
           onChange={(pregnant) => setBio({ pregnant })}
+          yes={t("yes")}
+          no={t("no")}
         />
-        <Toggle label="Current smoker" on={bio.smoker} onChange={(smoker) => setBio({ smoker })} />
-        <Toggle
-          label="Recent travel (endemic / long-haul)"
-          on={bio.travel}
-          onChange={(travel) => setBio({ travel })}
-        />
+        <Toggle label={t("smoker")} on={bio.smoker} onChange={(smoker) => setBio({ smoker })} yes={t("yes")} no={t("no")} />
+        <Toggle label={t("travel")} on={bio.travel} onChange={(travel) => setBio({ travel })} yes={t("yes")} no={t("no")} />
       </div>
 
       <div>
-        <p className="text-sm font-medium mb-2">Alcohol intake</p>
+        <p className="text-sm font-medium mb-2">{t("alcohol")}</p>
         <div className="flex flex-wrap gap-2">
           {(
             [
-              ["none", "None"],
-              ["moderate", "Moderate"],
-              ["heavy", "Heavy"],
+              ["none", t("none")],
+              ["moderate", t("moderate")],
+              ["heavy", t("heavy")],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -122,7 +133,7 @@ export function StepBio() {
       </div>
 
       <div>
-        <p className="text-sm font-medium mb-2">Known long-term conditions</p>
+        <p className="text-sm font-medium mb-2">{t("longTerm")}</p>
         <div className="flex flex-wrap gap-2">
           {COMORBIDITY_OPTIONS.map((opt) => {
             const on = bio.comorbidities.includes(opt.id);
@@ -143,36 +154,29 @@ export function StepBio() {
                     : "border-border bg-card hover:bg-muted",
                 )}
               >
-                {opt.label}
+                {t(COMORBID_KEY[opt.id] ?? opt.id)}
               </button>
             );
           })}
         </div>
       </div>
 
-      <Field label="Allergies (free text)" htmlFor="allergies">
+      <Field label={t("allergies")} htmlFor="allergies">
         <Input
           id="allergies"
           value={bio.allergies}
-          placeholder="e.g. penicillin — rash"
           onChange={(e) => setBio({ allergies: e.target.value })}
         />
       </Field>
-      <Field label="Regular medicines" htmlFor="meds">
+      <Field label={t("regularMeds")} htmlFor="meds">
         <Input
           id="meds"
           value={bio.medications}
-          placeholder="e.g. metformin, ramipril"
           onChange={(e) => setBio({ medications: e.target.value })}
         />
       </Field>
-      <Field label="Chief concern (optional)" htmlFor="notes">
-        <Textarea
-          id="notes"
-          value={bio.notes}
-          placeholder="In your words — what changed, and when."
-          onChange={(e) => setBio({ notes: e.target.value })}
-        />
+      <Field label={t("concern")} htmlFor="notes">
+        <Textarea id="notes" value={bio.notes} onChange={(e) => setBio({ notes: e.target.value })} />
       </Field>
     </div>
   );
@@ -200,11 +204,15 @@ function Toggle({
   on,
   onChange,
   disabled,
+  yes,
+  no,
 }: {
   label: string;
   on: boolean;
   onChange: (v: boolean) => void;
   disabled?: boolean;
+  yes: string;
+  no: string;
 }) {
   return (
     <button
@@ -217,7 +225,7 @@ function Toggle({
       )}
     >
       <span>{label}</span>
-      <span className="text-xs uppercase tracking-wider">{on ? "Yes" : "No"}</span>
+      <span className="text-xs uppercase tracking-wider">{on ? yes : no}</span>
     </button>
   );
 }

@@ -1,9 +1,11 @@
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useAssess } from "@/lib/clinical/store";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export function StepCourse() {
+  const { t } = useT();
   const context = useAssess((s) => s.context);
   const setContext = useAssess((s) => s.setContext);
 
@@ -11,7 +13,7 @@ export function StepCourse() {
     <div className="grid gap-8">
       <div>
         <div className="flex items-baseline justify-between mb-3">
-          <Label>How long have the main symptoms been present?</Label>
+          <Label>{t("duration")}</Label>
           <span className="text-sm tabular-nums text-muted-foreground">
             {context.durationDays < 1
               ? "Hours"
@@ -32,7 +34,7 @@ export function StepCourse() {
 
       <div>
         <div className="flex items-baseline justify-between mb-3">
-          <Label>How severe is it, right now?</Label>
+          <Label>{t("severity")}</Label>
           <span className="text-sm tabular-nums text-muted-foreground">{context.severity} / 10</span>
         </div>
         <Slider
@@ -49,9 +51,9 @@ export function StepCourse() {
         <div className="flex flex-wrap gap-2">
           {(
             [
-              ["sudden", "Sudden — minutes to an hour"],
-              ["gradual", "Gradual"],
-              ["unknown", "Not sure"],
+              ["sudden", t("sudden")],
+              ["gradual", t("gradual")],
+              ["unknown", t("unsure")],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -79,8 +81,8 @@ export function StepCourse() {
           context.progressing ? "border-primary bg-teal-soft text-primary" : "border-border bg-card",
         )}
       >
-        <span>Getting worse over the last few hours</span>
-        <span className="text-xs uppercase tracking-wider">{context.progressing ? "Yes" : "No"}</span>
+        <span>{t("worse")}</span>
+        <span className="text-xs uppercase tracking-wider">{context.progressing ? t("yes") : t("no")}</span>
       </button>
     </div>
   );
